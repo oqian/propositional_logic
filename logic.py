@@ -1,21 +1,16 @@
 import os
-path = "C:/Users/pasaa/OneDrive/Grad/CSC 442/logic/inputs/synthetic"
-file_name = os.path.join(path, '7')
-file = open(file_name)
-contents = file.read()
+path = "C:/Users/pasaa/OneDrive/Grad/CSC 442/logic/inputs/special"
+file_name = os.path.join(path, 'unsat100')
 
 
 # within the list, each clause is represented by a list
-file_lst = []
-with open(file_name) as fp:
-    for line in fp:
-        content = (line.strip().split(','))
-        file_lst.append(content)
-
-
-# to be finished later
 def read_file():
-    return
+    file_lst = []
+    with open(file_name) as fp:
+        for line in fp:
+            content = (line.strip().split(','))
+            file_lst.append(content)
+    return file_lst
 
 
 def bt(cnf):
@@ -51,7 +46,7 @@ def bt_helper(cnf: list, model: list):
                 return False
 
 
-
+# if there exist a false in any of the clause, then it is a false one
 def false_exist(cnf: list, model: list):
     for clause in cnf:
         if len([lit for lit in clause if lit not in negate_clause(model)]) == 0:
@@ -78,7 +73,7 @@ def negate_clause(cnf: list):
     return negation
 
 
-# find the pure literal, in other words, only 1 form across all clauses
+# find the pure literal, in other words, only 1 form across all clauses exists
 def propagate(cnf: list, model: list):
     candidates = []
     for clause in cnf:
@@ -112,14 +107,23 @@ def find_lit(cnf: list, model: list):
     return False
 
 
-# negate lit
+# negate literals
 def negate_lit(lit):
     if lit[0] == "~":
         return lit[1:]
     else:
         return "~" + lit
 
-a = bt(file_lst)
-print(a)
+
+if __name__ == "__main__":
+    file_list = read_file()
+    print(file_list)
+    Judge = bt(file_list)
+    if Judge:
+        print("satisfiable")
+    else:
+        print("unsatisfiable")
+
+
 
 
